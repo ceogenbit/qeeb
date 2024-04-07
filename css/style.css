@@ -20,7 +20,7 @@
   font-style: normal
 }
 :root {
-  --anim-delay: 0.5s;
+  --anim-delay: 0.4s;
   --hover: #7f1cfc;
   --bg-primary: #101010;
   --bg-secondary: #1d1e22;
@@ -268,6 +268,9 @@ body {
 .form__input::placeholder {
   color: var(--tekst-prumary)
 }
+.form__input:focus {
+  outline: .125rem solid #3fc9b0
+}
 .form__button {
   width: 1.375rem;
   height: 1.375rem;
@@ -277,7 +280,30 @@ body {
 .title {
   font-family: "Monument Extended";
   line-height: 1.2;
-  text-transform: capitalize
+  text-transform: uppercase
+}
+.title-small {
+  font-weight: 700
+}
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0);
+    transform: rotate(0)
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg)
+  }
+}
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0);
+    transform: rotate(0)
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg)
+  }
 }
 .header {
   font-size: 1.125rem;
@@ -316,7 +342,7 @@ body {
   content: "";
   width: 0;
   height: .1875rem;
-  background-color: var(--bg-accent);
+  background-color: var(--hover);
   position: absolute;
   top: 100%;
   left: 0;
@@ -408,9 +434,10 @@ body {
 .socials-footer__item a svg path {
   transition: fill var(--anim-delay) ease-in-out
 }
+.page__hero {
+  position: relative
+}
 .hero {
-  display: flex;
-  align-items: center;
   min-height: 100svh
 }
 .hero__container {
@@ -487,7 +514,106 @@ body {
   box-shadow: 1px -8px 40px rgba(129,28,252,.5),1px 8px 40px rgba(89,220,220,.5)
 }
 .hero__img-wrap {
-  padding: 2.5rem
+  padding: 1.5625rem
+}
+.hero__play-btn {
+  position: sticky;
+  left: calc(50% - 6.25rem);
+  width: 12.5rem;
+  height: 12.5rem;
+  overflow: hidden;
+  border-radius: 50%;
+  opacity: .4;
+  transition: opacity ease var(--anim-delay);
+  -webkit-animation: rotate 10s infinite linear;
+  animation: rotate 10s infinite linear
+}
+.hero__play-btn::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url(../img/hero/play-icon.svg) 0 0/cover no-repeat
+}
+.popular__slider.swiper {
+  position: relative;
+  overflow: visible
+}
+.popular__slider .swiper-button-next,
+.popular__slider .swiper-button-prev {
+  background-color: var(--bg-inverse);
+  border-radius: 50%;
+  position: absolute;
+  top: calc(50% - 2.1875rem);
+  background: rgba(29,30,31,.95) url(../img/popular/slider-arrow.svg) center/1.625rem no-repeat;
+  transition: background-color ease var(--anim-delay),opacity ease var(--anim-delay)
+}
+.popular__slider .swiper-button-prev {
+  left: -.75rem
+}
+.popular__slider .swiper-button-next {
+  right: -.75rem;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg)
+}
+.popular__slider .swiper-button-disabled {
+  opacity: .5
+}
+.popular__slider .swiper-slide__body {
+  padding: .625rem;
+  background-color: var(--bg-inverse);
+  border-radius: 3.125rem;
+  min-height: 22.9375rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden
+}
+.popular__slider .swiper-slide__img {
+  width: 100%;
+  -webkit-transform: scale(1.0001);
+  transform: scale(1.0001);
+  transition: -webkit-transform ease var(--anim-delay);
+  transition: transform ease var(--anim-delay);
+  transition: transform ease var(--anim-delay),-webkit-transform ease var(--anim-delay)
+}
+.popular__slider .swiper-slide__title {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: .9375rem;
+  transition: color ease var(--anim-delay)
+}
+.swiper {
+  overflow: hidden
+}
+.swiper-initialized {
+  touch-action: pan-y
+}
+.swiper-wrapper {
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+  display: flex;
+  position: relative
+}
+.swiper-vertical .swiper-wrapper {
+  flex-direction: column
+}
+.swiper-autoheight .swiper-wrapper {
+  align-items: flex-start
+}
+.swiper-initialized .swiper-slide {
+  flex-shrink: 0
+}
+.swiper-android .swiper-slide,
+.swiper-android .swiper-wrapper {
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0)
+}
+.swiper-button-lock {
+  display: none!important
 }
 @media (min-width:103.125em) {
   .logo {
@@ -535,6 +661,9 @@ body {
   .title {
     font-size: 2.25rem
   }
+  .title-small {
+    font-size: 1.5rem
+  }
   .header {
     min-height: 7.5rem
   }
@@ -553,11 +682,28 @@ body {
   .page > :first-child {
     padding-top: 9.375rem
   }
+  .page__poupular {
+    padding-top: 3.75rem
+  }
+  .page__poupular {
+    padding-bottom: 6.25rem
+  }
   .hero__artists img {
     width: 3.125rem
   }
   .hero__numb {
     font-size: 1.875rem
+  }
+  .popular__title:not(:last-child) {
+    margin-bottom: 4.5rem
+  }
+  .popular__slider .swiper-button-next,
+  .popular__slider .swiper-button-prev {
+    width: 4.375rem
+  }
+  .popular__slider .swiper-button-next,
+  .popular__slider .swiper-button-prev {
+    height: 4.375rem
   }
 }
 @media (max-width:20em) {
@@ -579,6 +725,9 @@ body {
   .title {
     font-size: 1.5rem
   }
+  .title-small {
+    font-size: 1.25rem
+  }
   .header {
     min-height: 5rem
   }
@@ -597,11 +746,28 @@ body {
   .page > :first-child {
     padding-top: 6.875rem
   }
+  .page__poupular {
+    padding-top: 1.875rem
+  }
+  .page__poupular {
+    padding-bottom: 1.875rem
+  }
   .hero__artists img {
     width: 2.5rem
   }
   .hero__numb {
     font-size: 1.5rem
+  }
+  .popular__title:not(:last-child) {
+    margin-bottom: 2.1875rem
+  }
+  .popular__slider .swiper-button-next,
+  .popular__slider .swiper-button-prev {
+    width: 3.125rem
+  }
+  .popular__slider .swiper-button-next,
+  .popular__slider .swiper-button-prev {
+    height: 3.125rem
   }
 }
 @media (max-width:47.99875em) {
@@ -868,6 +1034,16 @@ body {
       font-size: calc(1.5rem + .75 * (100vw - 20rem)/ 85)
     }
   }
+  @supports (font-size:clamp(1.25rem ,1.1911764706rem + 0.2941176471vw ,1.5rem)) {
+    .title-small {
+      font-size: clamp(1.25rem ,1.1911764706rem + .2941176471vw ,1.5rem)
+    }
+  }
+  @supports not (font-size:clamp(1.25rem ,1.1911764706rem + 0.2941176471vw ,1.5rem)) {
+    .title-small {
+      font-size: calc(1.25rem + .25 * (100vw - 20rem)/ 85)
+    }
+  }
   @supports (min-height:clamp(5rem ,4.4117647059rem + 2.9411764706vw ,7.5rem)) {
     .header {
       min-height: clamp(5rem ,4.4117647059rem + 2.9411764706vw ,7.5rem)
@@ -928,6 +1104,26 @@ body {
       padding-top: calc(6.875rem + 2.5 * (100vw - 20rem)/ 85)
     }
   }
+  @supports (padding-top:clamp(1.875rem ,1.4338235294rem + 2.2058823529vw ,3.75rem)) {
+    .page__poupular {
+      padding-top: clamp(1.875rem ,1.4338235294rem + 2.2058823529vw ,3.75rem)
+    }
+  }
+  @supports not (padding-top:clamp(1.875rem ,1.4338235294rem + 2.2058823529vw ,3.75rem)) {
+    .page__poupular {
+      padding-top: calc(1.875rem + 1.875 * (100vw - 20rem)/ 85)
+    }
+  }
+  @supports (padding-bottom:clamp(1.875rem ,0.8455882353rem + 5.1470588235vw ,6.25rem)) {
+    .page__poupular {
+      padding-bottom: clamp(1.875rem ,.8455882353rem + 5.1470588235vw ,6.25rem)
+    }
+  }
+  @supports not (padding-bottom:clamp(1.875rem ,0.8455882353rem + 5.1470588235vw ,6.25rem)) {
+    .page__poupular {
+      padding-bottom: calc(1.875rem + 4.375 * (100vw - 20rem)/ 85)
+    }
+  }
   @supports (width:clamp(2.5rem ,2.3529411765rem + 0.7352941176vw ,3.125rem)) {
     .hero__artists img {
       width: clamp(2.5rem ,2.3529411765rem + .7352941176vw ,3.125rem)
@@ -948,13 +1144,46 @@ body {
       font-size: calc(1.5rem + .375 * (100vw - 20rem)/ 85)
     }
   }
+  @supports (margin-bottom:clamp(2.1875rem ,1.6433823529rem + 2.7205882353vw ,4.5rem)) {
+    .popular__title:not(:last-child) {
+      margin-bottom: clamp(2.1875rem ,1.6433823529rem + 2.7205882353vw ,4.5rem)
+    }
+  }
+  @supports not (margin-bottom:clamp(2.1875rem ,1.6433823529rem + 2.7205882353vw ,4.5rem)) {
+    .popular__title:not(:last-child) {
+      margin-bottom: calc(2.1875rem + 2.3125 * (100vw - 20rem)/ 85)
+    }
+  }
+  @supports (width:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .popular__slider .swiper-button-next,
+    .popular__slider .swiper-button-prev {
+      width: clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)
+    }
+  }
+  @supports not (width:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .popular__slider .swiper-button-next,
+    .popular__slider .swiper-button-prev {
+      width: calc(3.125rem + 1.25 * (100vw - 20rem)/ 85)
+    }
+  }
+  @supports (height:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .popular__slider .swiper-button-next,
+    .popular__slider .swiper-button-prev {
+      height: clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)
+    }
+  }
+  @supports not (height:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .popular__slider .swiper-button-next,
+    .popular__slider .swiper-button-prev {
+      height: calc(3.125rem + 1.25 * (100vw - 20rem)/ 85)
+    }
+  }
 }
 @media (any-hover:hover) {
   body a:focus,
   body button:focus,
   body input:focus {
-    outline: .1875rem solid var(--hover);
-    border-radius: .1875rem
+    outline: .1875rem dotted var(--hover)
   }
   .button:hover {
     background-color: var(--hover);
@@ -970,6 +1199,23 @@ body {
     color: var(--hover)
   }
   .socials-footer__item a:hover svg path {
-    fill: var(--bg-accent)
+    fill: var(--hover)
+  }
+  .hero__play-btn:hover {
+    opacity: 1
+  }
+  .popular__slider .swiper-button-next:hover,
+  .popular__slider .swiper-button-prev:hover {
+    background-color: var(--hover)
+  }
+  .popular__slider .swiper-button-disabled:hover {
+    background-color: rgba(29,30,31,.95)
+  }
+  .popular__slider .swiper-slide__body:hover .swiper-slide__img {
+    -webkit-transform: scale(1.04);
+    transform: scale(1.04)
+  }
+  .popular__slider .swiper-slide__body:hover .swiper-slide__title {
+    color: var(--hover)
   }
 }
