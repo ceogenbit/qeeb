@@ -533,6 +533,20 @@
         el.classList.add(...Array.isArray(classes) ? classes : utils_classesToTokens(classes));
         return el;
     }
+    function utils_elementOffset(el) {
+        const window = ssr_window_esm_getWindow();
+        const document = ssr_window_esm_getDocument();
+        const box = el.getBoundingClientRect();
+        const body = document.body;
+        const clientTop = el.clientTop || body.clientTop || 0;
+        const clientLeft = el.clientLeft || body.clientLeft || 0;
+        const scrollTop = el === window ? window.scrollY : el.scrollTop;
+        const scrollLeft = el === window ? window.scrollX : el.scrollLeft;
+        return {
+            top: box.top + scrollTop - clientTop,
+            left: box.left + scrollLeft - clientLeft
+        };
+    }
     function elementPrevAll(el, selector) {
         const prevEls = [];
         while (el.previousElementSibling) {
@@ -3219,6 +3233,90 @@
         }));
     }));
     swiper_core_Swiper.use([ Resize, Observer ]);
+    function Keyboard(_ref) {
+        let {swiper, extendParams, on, emit} = _ref;
+        const document = ssr_window_esm_getDocument();
+        const window = ssr_window_esm_getWindow();
+        swiper.keyboard = {
+            enabled: false
+        };
+        extendParams({
+            keyboard: {
+                enabled: false,
+                onlyInViewport: true,
+                pageUpDown: true
+            }
+        });
+        function handle(event) {
+            if (!swiper.enabled) return;
+            const {rtlTranslate: rtl} = swiper;
+            let e = event;
+            if (e.originalEvent) e = e.originalEvent;
+            const kc = e.keyCode || e.charCode;
+            const pageUpDown = swiper.params.keyboard.pageUpDown;
+            const isPageUp = pageUpDown && kc === 33;
+            const isPageDown = pageUpDown && kc === 34;
+            const isArrowLeft = kc === 37;
+            const isArrowRight = kc === 39;
+            const isArrowUp = kc === 38;
+            const isArrowDown = kc === 40;
+            if (!swiper.allowSlideNext && (swiper.isHorizontal() && isArrowRight || swiper.isVertical() && isArrowDown || isPageDown)) return false;
+            if (!swiper.allowSlidePrev && (swiper.isHorizontal() && isArrowLeft || swiper.isVertical() && isArrowUp || isPageUp)) return false;
+            if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) return;
+            if (document.activeElement && document.activeElement.nodeName && (document.activeElement.nodeName.toLowerCase() === "input" || document.activeElement.nodeName.toLowerCase() === "textarea")) return;
+            if (swiper.params.keyboard.onlyInViewport && (isPageUp || isPageDown || isArrowLeft || isArrowRight || isArrowUp || isArrowDown)) {
+                let inView = false;
+                if (utils_elementParents(swiper.el, `.${swiper.params.slideClass}, swiper-slide`).length > 0 && utils_elementParents(swiper.el, `.${swiper.params.slideActiveClass}`).length === 0) return;
+                const el = swiper.el;
+                const swiperWidth = el.clientWidth;
+                const swiperHeight = el.clientHeight;
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                const swiperOffset = utils_elementOffset(el);
+                if (rtl) swiperOffset.left -= el.scrollLeft;
+                const swiperCoord = [ [ swiperOffset.left, swiperOffset.top ], [ swiperOffset.left + swiperWidth, swiperOffset.top ], [ swiperOffset.left, swiperOffset.top + swiperHeight ], [ swiperOffset.left + swiperWidth, swiperOffset.top + swiperHeight ] ];
+                for (let i = 0; i < swiperCoord.length; i += 1) {
+                    const point = swiperCoord[i];
+                    if (point[0] >= 0 && point[0] <= windowWidth && point[1] >= 0 && point[1] <= windowHeight) {
+                        if (point[0] === 0 && point[1] === 0) continue;
+                        inView = true;
+                    }
+                }
+                if (!inView) return;
+            }
+            if (swiper.isHorizontal()) {
+                if (isPageUp || isPageDown || isArrowLeft || isArrowRight) if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
+                if ((isPageDown || isArrowRight) && !rtl || (isPageUp || isArrowLeft) && rtl) swiper.slideNext();
+                if ((isPageUp || isArrowLeft) && !rtl || (isPageDown || isArrowRight) && rtl) swiper.slidePrev();
+            } else {
+                if (isPageUp || isPageDown || isArrowUp || isArrowDown) if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
+                if (isPageDown || isArrowDown) swiper.slideNext();
+                if (isPageUp || isArrowUp) swiper.slidePrev();
+            }
+            emit("keyPress", kc);
+            return;
+        }
+        function enable() {
+            if (swiper.keyboard.enabled) return;
+            document.addEventListener("keydown", handle);
+            swiper.keyboard.enabled = true;
+        }
+        function disable() {
+            if (!swiper.keyboard.enabled) return;
+            document.removeEventListener("keydown", handle);
+            swiper.keyboard.enabled = false;
+        }
+        on("init", (() => {
+            if (swiper.params.keyboard.enabled) enable();
+        }));
+        on("destroy", (() => {
+            if (swiper.keyboard.enabled) disable();
+        }));
+        Object.assign(swiper.keyboard, {
+            enable,
+            disable
+        });
+    }
     function create_element_if_not_defined_createElementIfNotDefined(swiper, originalParams, params, checkProps) {
         if (swiper.params.createElements) Object.keys(checkProps).forEach((key => {
             if (!params[key] && params.auto === true) {
@@ -3384,12 +3482,13 @@
     }
     function initSliders() {
         if (document.querySelector(".popular__slider")) new swiper_core_Swiper(".popular__slider", {
-            modules: [ Navigation ],
+            modules: [ Navigation, Keyboard ],
             observer: true,
             observeParents: true,
-            slidesPerView: 1.2,
+            slidesPerView: 1.3,
             spaceBetween: 30,
             speed: 800,
+            keyboard: true,
             navigation: {
                 prevEl: ".swiper-button-prev",
                 nextEl: ".swiper-button-next"
