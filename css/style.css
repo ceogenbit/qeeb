@@ -714,6 +714,74 @@ body {
 .items-top__procent {
   color: var(--bg-accent)
 }
+.trand__slide-body {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  transition: background-color var(--anim-delay) ease
+}
+.trand__inner {
+  padding: .8125rem
+}
+.trand__slide-title {
+  font-weight: 700;
+  font-size: 1.5rem
+}
+.trand__slide-title:not(:last-child) {
+  margin-bottom: .625rem
+}
+.trand__img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -webkit-transform: scale(1.0001);
+  transform: scale(1.0001);
+  transition: -webkit-transform var(--anim-delay) ease;
+  transition: transform var(--anim-delay) ease;
+  transition: transform var(--anim-delay) ease,-webkit-transform var(--anim-delay) ease
+}
+.trand__img:not(:last-child) {
+  margin-bottom: .9375rem
+}
+.trand__info {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5625rem;
+  background-color: var(--bg-inverse);
+  padding: .9375rem;
+  border-radius: 1.25rem
+}
+.trand__info-lable {
+  color: #999
+}
+.trand__info-lable:not(:last-child) {
+  margin-bottom: .4375rem
+}
+.trand .swiper {
+  position: relative;
+  overflow: visible
+}
+.trand .swiper-button-next,
+.trand .swiper-button-prev {
+  background-color: var(--bg-inverse);
+  border-radius: 50%;
+  position: absolute;
+  top: calc(50% - 2.1875rem);
+  background: rgba(29,30,31,.95) url(../img/popular/slider-arrow.svg) center/1.625rem no-repeat;
+  transition: background-color ease var(--anim-delay),opacity ease var(--anim-delay)
+}
+.trand .swiper-button-prev {
+  left: -.75rem
+}
+.trand .swiper-button-next {
+  right: -.75rem;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg)
+}
+.trand .swiper-button-disabled {
+  opacity: .5
+}
 .swiper {
   overflow: hidden
 }
@@ -828,6 +896,12 @@ body {
   .page__top {
     padding-bottom: 5.3125rem
   }
+  .page__trand {
+    padding-top: 7.5rem
+  }
+  .page__trand {
+    padding-bottom: 7.5rem
+  }
   .hero__artists img {
     width: 3.125rem
   }
@@ -877,6 +951,20 @@ body {
   }
   .items-top__statistics {
     font-size: 1rem
+  }
+  .trand__title:not(:last-child) {
+    margin-bottom: 4.5rem
+  }
+  .trand__code:not(:last-child) {
+    margin-bottom: 2.0625rem
+  }
+  .trand .swiper-button-next,
+  .trand .swiper-button-prev {
+    width: 4.375rem
+  }
+  .trand .swiper-button-next,
+  .trand .swiper-button-prev {
+    height: 4.375rem
   }
 }
 @media (max-width:20em) {
@@ -931,6 +1019,12 @@ body {
   .page__top {
     padding-bottom: 1.875rem
   }
+  .page__trand {
+    padding-top: 1.875rem
+  }
+  .page__trand {
+    padding-bottom: 1.875rem
+  }
   .hero__artists img {
     width: 2.5rem
   }
@@ -980,6 +1074,20 @@ body {
   }
   .items-top__statistics {
     font-size: .75rem
+  }
+  .trand__title:not(:last-child) {
+    margin-bottom: 1.5625rem
+  }
+  .trand__code:not(:last-child) {
+    margin-bottom: 1.25rem
+  }
+  .trand .swiper-button-next,
+  .trand .swiper-button-prev {
+    width: 3.125rem
+  }
+  .trand .swiper-button-next,
+  .trand .swiper-button-prev {
+    height: 3.125rem
   }
 }
 @media (max-width:47.99875em) {
@@ -1356,6 +1464,26 @@ body {
       padding-bottom: calc(1.875rem + 3.4375 * (100vw - 20rem)/ 85)
     }
   }
+  @supports (padding-top:clamp(1.875rem ,0.5514705882rem + 6.6176470588vw ,7.5rem)) {
+    .page__trand {
+      padding-top: clamp(1.875rem ,.5514705882rem + 6.6176470588vw ,7.5rem)
+    }
+  }
+  @supports not (padding-top:clamp(1.875rem ,0.5514705882rem + 6.6176470588vw ,7.5rem)) {
+    .page__trand {
+      padding-top: calc(1.875rem + 5.625 * (100vw - 20rem)/ 85)
+    }
+  }
+  @supports (padding-bottom:clamp(1.875rem ,0.5514705882rem + 6.6176470588vw ,7.5rem)) {
+    .page__trand {
+      padding-bottom: clamp(1.875rem ,.5514705882rem + 6.6176470588vw ,7.5rem)
+    }
+  }
+  @supports not (padding-bottom:clamp(1.875rem ,0.5514705882rem + 6.6176470588vw ,7.5rem)) {
+    .page__trand {
+      padding-bottom: calc(1.875rem + 5.625 * (100vw - 20rem)/ 85)
+    }
+  }
   @supports (width:clamp(2.5rem ,2.3529411765rem + 0.7352941176vw ,3.125rem)) {
     .hero__artists img {
       width: clamp(2.5rem ,2.3529411765rem + .7352941176vw ,3.125rem)
@@ -1520,6 +1648,50 @@ body {
       font-size: calc(.75rem + .25 * (100vw - 20rem)/ 85)
     }
   }
+  @supports (margin-bottom:clamp(1.5625rem ,0.8713235294rem + 3.4558823529vw ,4.5rem)) {
+    .trand__title:not(:last-child) {
+      margin-bottom: clamp(1.5625rem ,.8713235294rem + 3.4558823529vw ,4.5rem)
+    }
+  }
+  @supports not (margin-bottom:clamp(1.5625rem ,0.8713235294rem + 3.4558823529vw ,4.5rem)) {
+    .trand__title:not(:last-child) {
+      margin-bottom: calc(1.5625rem + 2.9375 * (100vw - 20rem)/ 85)
+    }
+  }
+  @supports (margin-bottom:clamp(1.25rem ,1.0588235294rem + 0.9558823529vw ,2.0625rem)) {
+    .trand__code:not(:last-child) {
+      margin-bottom: clamp(1.25rem ,1.0588235294rem + .9558823529vw ,2.0625rem)
+    }
+  }
+  @supports not (margin-bottom:clamp(1.25rem ,1.0588235294rem + 0.9558823529vw ,2.0625rem)) {
+    .trand__code:not(:last-child) {
+      margin-bottom: calc(1.25rem + .8125 * (100vw - 20rem)/ 85)
+    }
+  }
+  @supports (width:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .trand .swiper-button-next,
+    .trand .swiper-button-prev {
+      width: clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)
+    }
+  }
+  @supports not (width:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .trand .swiper-button-next,
+    .trand .swiper-button-prev {
+      width: calc(3.125rem + 1.25 * (100vw - 20rem)/ 85)
+    }
+  }
+  @supports (height:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .trand .swiper-button-next,
+    .trand .swiper-button-prev {
+      height: clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)
+    }
+  }
+  @supports not (height:clamp(3.125rem ,2.8308823529rem + 1.4705882353vw ,4.375rem)) {
+    .trand .swiper-button-next,
+    .trand .swiper-button-prev {
+      height: calc(3.125rem + 1.25 * (100vw - 20rem)/ 85)
+    }
+  }
 }
 @media (any-hover:hover) {
   .button:hover {
@@ -1560,5 +1732,19 @@ body {
   }
   .items-top__link:hover {
     background-color: var(--hover)
+  }
+  .trand__slide-body:hover {
+    background-color: var(--hover)
+  }
+  .trand__slide-body:hover .trand__img {
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03)
+  }
+  .trand .swiper-button-next:hover,
+  .trand .swiper-button-prev:hover {
+    background-color: var(--hover)
+  }
+  .trand .swiper-button-disabled:hover {
+    background-color: rgba(29,30,31,.95)
   }
 }
